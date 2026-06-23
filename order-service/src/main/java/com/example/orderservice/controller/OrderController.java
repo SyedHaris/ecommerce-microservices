@@ -24,9 +24,9 @@ public class OrderController {
         return orderService.create(orderRequestDTO, AuthUtil.getAuthenticatedUserId());
     }
 
-    @GetMapping("/{order_id}")
+    @GetMapping("/{orderId}")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public OrderResponseDTO getOrder(@PathVariable("order_id") Long orderId) {
+    public OrderResponseDTO getOrder(@PathVariable("orderId") Long orderId) {
         return orderService.getOrder(orderId, AuthUtil.getAuthenticatedUserId());
     }
 
