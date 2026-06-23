@@ -1,0 +1,45 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: inventory-service
+  datasource:
+    url: jdbc:mysql://localhost:3310/ecommerce_inventory?serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: admin
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: none
+    open-in-view: false
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.xml
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      group-id: inventory-consumer-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+
+security:
+  jwt:
+    secret-key: ZLYicY6d2g4svUSbv3lb68G0ZPE9ph8t6Xu3jwYfcJO
+    expiration-time: 3600000
+
+kafka-topics:
+  order_created_topic: order_created
+  inventory_reserved_topic: inventory_reserved
+  inventory_reservation_failed_topic: inventory_reservation_failed
+  order_purchase_failed_topic: order_purchase_failed
+
+
+
+
+
+
+

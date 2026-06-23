@@ -1,0 +1,68 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: order-service
+  datasource:
+    url: jdbc:mysql://localhost:3309/ecommerce_order?serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: admin
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: none
+    open-in-view: false
+    show-sql: true
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.xml
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      group-id: order-consumer-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+  cache:
+    type: redis
+  data:
+    redis:
+      host: localhost
+      port: 6380
+
+
+logging:
+  level:
+    sql: debug
+    org.hibernate.orm.jdbc.bind: trace
+
+security:
+  jwt:
+    secret-key: ZLYicY6d2g4svUSbv3lb68G0ZPE9ph8t6Xu3jwYfcJO
+    expiration-time: 3600000
+
+inventory-service:
+  url: localhost:8083
+
+resilience4j.retry:
+  instances:
+    inventory-service:
+      maxAttempts: 3
+      waitDuration: 5s
+      enableExponentialBackoff: true
+      exponentialBackoffMultiplier: 2
+      retryExceptions:
+        - org.springframework.web.client.HttpServerErrorException
+        - feign.RetryableException
+
+kafka-topics:
+  order_created_topic: order_created
+  inventory_reservation_failed_topic: inventory_reservation_failed
+  order_purchase_failed_topic: order_purchase_failed
+  order_purchased_topic: order_purchased
+
+
+
+
