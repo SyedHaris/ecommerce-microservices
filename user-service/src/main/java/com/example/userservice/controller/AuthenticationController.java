@@ -17,14 +17,14 @@ public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
 
-    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/signup")
+    @ResponseStatus(HttpStatus.CREATED)
     public SignupResponseDTO signup(@Valid @RequestBody SignupRequestDTO signupRequestDTO) {
         return authenticationService.signup(signupRequestDTO);
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @PostMapping("/login")
+    @ResponseStatus(HttpStatus.OK)
     public LoginResponseDTO login(@Valid @RequestBody LoginRequestDTO loginRequestDTO) {
         return authenticationService.login(loginRequestDTO);
     }

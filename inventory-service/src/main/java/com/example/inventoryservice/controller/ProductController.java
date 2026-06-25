@@ -5,6 +5,7 @@ import com.example.inventoryservice.dto.ProductDetailsResponseDTO;
 import com.example.inventoryservice.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,7 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('ADMIN')")
     public ProductDetailsResponseDTO create(@Valid @RequestBody CreateProductRequestDTO createProductRequestDTO) {
         return productService.create(createProductRequestDTO);
